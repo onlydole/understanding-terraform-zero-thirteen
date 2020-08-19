@@ -11,6 +11,20 @@ module "vpc" {
 
   enable_nat_gateway = true
 
+  vpc_tags = {
+    "kubernetes.io/cluster/${var.project_name}" = "shared"
+  }
+
+  public_subnet_tags = {
+    "kubernetes.io/role/elb"                    = 1
+    "kubernetes.io/cluster/${var.project_name}" = "shared"
+  }
+
+  private_subnet_tags = {
+    "kubernetes.io/role/internal-elb"           = 1
+    "kubernetes.io/cluster/${var.project_name}" = "shared"
+  }
+
   tags = {
     Operator    = "Terraform"
     Environment = "demo"
