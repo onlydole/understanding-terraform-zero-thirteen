@@ -9,4 +9,13 @@ module "eks" {
   manage_aws_auth  = false
 
   cluster_enabled_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
+
+  worker_groups = [
+    {
+      name                 = var.project_name
+      asg_desired_capacity = 3
+      asg_max_size         = 5
+      instance_type        = "m5.large"
+    }
+  ]
 }
