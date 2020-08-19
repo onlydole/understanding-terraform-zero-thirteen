@@ -15,3 +15,9 @@ variable "availability_zones" {
   description = "Availability zones that will be used in this demo."
   default     = ["us-west-2a", "us-west-2b", "us-west-2c"]
 }
+
+variable "ssh_key_file" {
+  type        = string
+  description = "SSH Key file name"
+  default     = "ec2-ssh-key.pem"
+}
