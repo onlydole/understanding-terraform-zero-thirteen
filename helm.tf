@@ -7,9 +7,10 @@ provider "helm" {
 }
 
 resource "helm_release" "consul" {
-  name       = "consul"
-  chart      = "hashicorp/consul"
+  name       = "hashicorp"
+  chart      = "consul"
   repository = "https://helm.releases.hashicorp.com"
+  version    = "0.24.1"
 
   set {
     name  = "global.datacenter"
