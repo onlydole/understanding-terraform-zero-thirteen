@@ -4,7 +4,7 @@ variable "project_name" {
   default     = "zero-thirteen"
 }
 
-variable "project_region" {
+variable "region" {
   type        = string
   description = "AWS Region that will be used in this demo."
   default     = "us-west-2"
