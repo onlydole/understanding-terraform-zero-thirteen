@@ -44,8 +44,8 @@ resource "helm_release" "consul" {
   }
 
   # This breaks things (on purpose)
-  set {
-    name  = "server.bootstrapExpect"
-    value = 1
-  }
+  # set {
+  #   name  = "server.bootstrapExpect"
+  #   value = 1
+  # }
 }
