@@ -1,54 +1,40 @@
-# Dashboard Service
 resource "kubernetes_service_account" "dashboard" {
   metadata {
     name = "dashboard"
   }
 }
 
-resource "kubernetes_deployment" "dashboard" {
+resource "kubernetes_pod" "dashboard" {
   metadata {
     name = "dashboard"
+
     labels = {
       app = "dashboard"
     }
+
     annotations = {
-      "consul.hashicorp.com/connect-inject" = "true"
-      "consul.hashicorp.com/connect-service-upstreams" : "counting:9001"
+      "consul.hashicorp.com/connect-inject"            = "true"
+      "consul.hashicorp.com/connect-service-upstreams" = "counting:9001"
     }
   }
 
   spec {
-    replicas = 1
+    container {
+      name  = "dashboard"
+      image = "hashicorp/dashboard-service:0.0.4"
 
-    selector {
-      match_labels = {
-        app = "dashboard"
+      port {
+        name           = "http"
+        container_port = 9002
+      }
+
+      env {
+        name  = "COUNTING_SERVICE_URL"
+        value = "http://localhost:9001"
       }
     }
 
-    template {
-      metadata {
-        labels = {
-          app = "dashboard"
-        }
-      }
-
-      spec {
-        service_account_name = "dashboard"
-        container {
-          image = "hashicorp/dashboard-service:0.0.4"
-          name  = "dashboard"
-          port {
-            name           = "http"
-            container_port = 9002
-          }
-          env {
-            name  = "COUNTING_SERVICE_URL"
-            value = "http://localhost:9001"
-          }
-        }
-      }
-    }
+    service_account_name = "dashboard"
   }
 }
 

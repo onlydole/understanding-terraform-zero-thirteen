@@ -5,45 +5,26 @@ resource "kubernetes_service_account" "counting" {
   }
 }
 
-resource "kubernetes_deployment" "counting" {
+resource "kubernetes_pod" "counting" {
   metadata {
     name = "counting"
-    labels = {
-      app = "counting"
-    }
+
     annotations = {
       "consul.hashicorp.com/connect-inject" = "true"
     }
   }
 
   spec {
-    replicas = 1
+    container {
+      name  = "counting"
+      image = "hashicorp/counting-service:0.0.2"
 
-    selector {
-      match_labels = {
-        app = "counting"
+      port {
+        name           = "http"
+        container_port = 9001
       }
     }
 
-    template {
-      metadata {
-        labels = {
-          app = "counting"
-        }
-      }
-
-      spec {
-        service_account_name = "counting"
-        container {
-          image = "hashicorp/counting-service:0.0.2"
-          name  = "counting"
-          port {
-            name           = "http"
-            container_port = 9001
-          }
-        }
-      }
-    }
+    service_account_name = "counting"
   }
 }
-
