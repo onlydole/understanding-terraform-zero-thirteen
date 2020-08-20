@@ -15,9 +15,7 @@
           "virtualization-type": "hvm"
         },
         "most_recent": true,
-        "owners": [
-          "amazon"
-        ]
+        "owners": ["amazon"]
       },
       "ssh_username": "ec2-user",
       "type": "amazon-ebs"
@@ -26,9 +24,7 @@
   "min_packer_version": "1.6.1",
   "provisioners": [
     {
-      "inline": [
-        "sudo yum install git -y"
-      ],
+      "inline": ["sudo yum install git -y"],
       "type": "shell"
     },
     {

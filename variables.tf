@@ -27,5 +27,3 @@ variable "ssh_key_file" {
   description = "SSH Key file name"
   default     = "hashicorplivedemo-ssh-key.pem"
 }
-
-# 
