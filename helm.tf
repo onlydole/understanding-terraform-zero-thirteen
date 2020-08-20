@@ -1,9 +1,9 @@
 provider "helm" {
   kubernetes {
+    load_config_file       = false
     host                   = data.aws_eks_cluster.cluster.endpoint
     cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
     token                  = data.aws_eks_cluster_auth.cluster.token
-    load_config_file       = false
   }
 }
 
@@ -41,5 +41,11 @@ resource "helm_release" "consul" {
   set {
     name  = "server.disruptionBudget.maxEnabled"
     value = 0
+  }
+
+  # This breaks things (on purpose)
+  set {
+    name  = "server.bootstrapExpect"
+    value = 1
   }
 }
