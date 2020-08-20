@@ -46,3 +46,4 @@ resource "kubernetes_deployment" "counting" {
     }
   }
 }
+
