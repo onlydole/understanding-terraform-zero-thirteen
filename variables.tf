@@ -21,3 +21,11 @@ variable "cluster_version" {
   description = "Kubernetes version for the EKS cluster"
   default     = "1.17"
 }
+
+variable "ssh_key_file" {
+  type        = string
+  description = "SSH Key file name"
+  default     = "hashicorplivedemo-ssh-key.pem"
+}
+
+# 
