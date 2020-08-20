@@ -7,11 +7,11 @@ resource "tls_private_key" "hashicorplivedemokey" {
 
 // register Public Key part of SSH Key with EC2 Console
 resource "aws_key_pair" "hashicorplivedemokey" {
-  key_name   = "Terraform-managed EC2 Key Pair for HashiCorp Live"
+  key_name   = "Terraform managed EC2 Key Pair for HashiCorp Live"
   public_key = tls_private_key.hashicorplivedemokey.public_key_openssh
 
   tags = {
-    Name = "Terraform-managed EC2 Key Pair for HashiCorp Live"
+    Name = "Terraform managed EC2 Key Pair for HashiCorp Live"
   }
 }
 
