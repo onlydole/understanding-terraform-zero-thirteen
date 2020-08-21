@@ -32,10 +32,4 @@ resource "helm_release" "consul" {
     name  = "syncCatalog.enabled"
     value = true
   }
-
-  # This breaks things (on purpose)
-  # set {
-  #   name  = "server.bootstrapExpect"
-  #   value = 1
-  # }
 }

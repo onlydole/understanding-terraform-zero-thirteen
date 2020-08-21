@@ -29,13 +29,14 @@ module "consul_aws_cluster" {
   source  = "hashicorp/consul/aws//examples/example-with-custom-asg-role"
   version = "0.7.7"
 
+  count = 3
+
   # Stuff for your cluster
   ami_id          = data.aws_ami.consul_live.image_id
   cluster_tag_key = "hashicorplive"
-  #cluster_name                      = "hashicorplive-demo-consul"
-  consul_service_linked_role_suffix = "hashicorplive-consul-role"
-  ssh_key_name                      = aws_key_pair.hashicorplivedemokey.key_name
-  vpc_id                            = module.vpc.vpc_id
+  cluster_name    = "hc-live-consul-${count.index}"
+  ssh_key_name    = aws_key_pair.hashicorplivedemokey.key_name
+  vpc_id          = module.vpc.vpc_id
 
   # Used to encrypt RPC traffic between nodes
   enable_rpc_encryption = true
@@ -44,10 +45,10 @@ module "consul_aws_cluster" {
   enable_gossip_encryption = true
   gossip_encryption_key    = random_password.random.result
 
-  # for_each configuration block 
-  for_each = var.cluster
+  # # for_each configuration block 
+  # for_each = var.cluster
 
-  cluster_name = each.key
-  num_servers  = each.value.num_servers
-  num_clients  = each.value.num_clients
+  # cluster_name = each.key
+  # num_servers  = each.value.num_servers
+  # num_clients  = each.value.num_clients
 }
