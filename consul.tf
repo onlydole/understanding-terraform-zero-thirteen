@@ -11,10 +11,9 @@ resource "random_password" "random" {
 }
 
 data "aws_ami" "consul_live" {
-  executable_users = ["self"]
-  most_recent      = true
-  name_regex       = "hashicorp-live-consul-2020-*"
-  owners           = ["self"]
+  most_recent = true
+  name_regex  = "hashicorp-live-consul-2020-*"
+  owners      = ["self"]
 }
 
 module "consul_aws_cluster" {
@@ -22,24 +21,24 @@ module "consul_aws_cluster" {
   version = "0.7.7"
 
   // Stuff for your cluster
-  ami_id          = aws_ami.consul_live.name
-  cluster_tag_key = "hashicorplive"
-  cluster_name = "hashicorplive-demo-consul"
+  ami_id                            = data.aws_ami.consul_live.image_id
+  cluster_tag_key                   = "hashicorplive"
+  cluster_name                      = "hashicorplive-demo-consul"
   consul_service_linked_role_suffix = "hashicorplive-consul-role"
-  num_servers = 3
-  num_clients = 1
-  ssh_key_name = aws_key_pair.hashicorplivedemokey.key_name
-  vpc_id = module.vpc.vpc_id
+  num_servers                       = 3
+  num_clients                       = 1
+  ssh_key_name                      = aws_key_pair.hashicorplivedemokey.key_name
+  vpc_id                            = module.vpc.vpc_id
 
   // Used to encrypt RPC traffic between nodes
   enable_rpc_encryption = true
-  ca_path = "/opt/consul/tls/ca"
-  key_file_path = "/opt/consul/tls/consul.key.pem"
-  cert_file_path = "/opt/consul/tls/consul.crt.pem"
+  ca_path               = "/opt/consul/tls/ca"
+  key_file_path         = "/opt/consul/tls/consul.key.pem"
+  cert_file_path        = "/opt/consul/tls/consul.crt.pem"
 
   // Used to enable gossip encryption between nodes
   enable_gossip_encryption = true
-  gossip_encryption_key = random_password.random.result
+  gossip_encryption_key    = random_password.random.result
 }
 
 module "consul_elb" {
@@ -49,7 +48,7 @@ module "consul_elb" {
   name = var.project_name
 
   subnets         = module.vpc.public_subnets
-  security_groups = aws_security_group.consul_default.id
+  security_groups = [aws_security_group.consul_default.id]
   internal        = false
 
   listener = [
@@ -62,7 +61,7 @@ module "consul_elb" {
   ]
 
   health_check = {
-    target              = "TCP:8500/"
+    target              = "TCP:8500"
     interval            = 5
     healthy_threshold   = 2
     unhealthy_threshold = 2
