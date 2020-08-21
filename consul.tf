@@ -55,16 +55,16 @@ module "consul_elb" {
 
   name = var.project_name
 
-  subnets         = module.vpc.private_subnets
+  subnets         = module.vpc.public_subnets
   security_groups = [aws_security_group.consul_default.id]
   internal        = false
 
   listener = [
     {
       instance_port     = "8500"
-      instance_protocol = "HTTP"
+      instance_protocol = "TCP"
       lb_port           = "8500"
-      lb_protocol       = "HTTP"
+      lb_protocol       = "TCP"
     }
   ]
 
