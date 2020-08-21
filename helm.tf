@@ -33,16 +33,6 @@ resource "helm_release" "consul" {
     value = true
   }
 
-  set {
-    name  = "server.disruptionBudget.enabled"
-    value = true
-  }
-
-  set {
-    name  = "server.disruptionBudget.maxEnabled"
-    value = 0
-  }
-
   # This breaks things (on purpose)
   # set {
   #   name  = "server.bootstrapExpect"

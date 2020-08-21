@@ -12,6 +12,10 @@ terraform {
       version = "~> 2.2"
       source  = "hashicorp/random"
     }
+    helm = {
+      source  = "hashicorp/helm"
+      version = "~> 1.2"
+    }
   }
 
   required_version = "~> 0.13"
