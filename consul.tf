@@ -62,7 +62,7 @@ module "consul_elb" {
 
   health_check = {
     target              = "HTTP:8500/v1/status/leader"
-    interval            = 5
+    interval            = 10
     healthy_threshold   = 2
     unhealthy_threshold = 2
     timeout             = 5
