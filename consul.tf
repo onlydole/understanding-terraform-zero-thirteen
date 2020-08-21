@@ -13,6 +13,10 @@ variable cluster {
   }
 }
 
+resource "random_id" "iam_suffix" {
+  byte_length = 4
+}
+
 resource "random_password" "random" {
   length           = 16
   special          = true
@@ -32,11 +36,12 @@ module "consul_aws_cluster" {
   count = 3
 
   # Stuff for your cluster
-  ami_id          = data.aws_ami.consul_live.image_id
-  cluster_tag_key = "hashicorplive"
-  cluster_name    = "hc-live-consul-${count.index}"
-  ssh_key_name    = aws_key_pair.hashicorplivedemokey.key_name
-  vpc_id          = module.vpc.vpc_id
+  ami_id                            = data.aws_ami.consul_live.image_id
+  cluster_tag_key                   = "hashicorplive"
+  cluster_name                      = "hc-live-demo-consul-${random_id.iam_suffix.hex}"
+  consul_service_linked_role_suffix = "hashicorplive-consul-role"
+  ssh_key_name                      = aws_key_pair.hashicorplivedemokey.key_name
+  vpc_id                            = module.vpc.vpc_id
 
   # Used to encrypt RPC traffic between nodes
   enable_rpc_encryption = true
@@ -48,7 +53,7 @@ module "consul_aws_cluster" {
   # # for_each configuration block 
   # for_each = var.cluster
 
-  # cluster_name = each.key
+  # cluster_name = "hc-live-demo-consul-${each.key}"
   # num_servers  = each.value.num_servers
   # num_clients  = each.value.num_clients
 }
