@@ -61,7 +61,7 @@ module "consul_elb" {
   ]
 
   health_check = {
-    target              = "TCP:8500"
+    target              = "HTTP:8500/v1/status/leader"
     interval            = 5
     healthy_threshold   = 2
     unhealthy_threshold = 2
