@@ -55,7 +55,7 @@ module "consul_elb" {
 
   name = var.project_name
 
-  subnets         = module.vpc.public_subnets
+  subnets         = module.vpc.private_subnets
   security_groups = [aws_security_group.consul_default.id]
   internal        = false
 
