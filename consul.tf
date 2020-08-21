@@ -41,6 +41,14 @@ module "consul_aws_cluster" {
   gossip_encryption_key    = random_password.random.result
 }
 
+data "aws_instances" "consul_tags" {
+  instance_tags = {
+    hashicorplive = "hashicorplive-demo-consul"
+  }
+
+  instance_state_names = ["running"]
+}
+
 module "consul_elb" {
   source  = "terraform-aws-modules/elb/aws"
   version = "~> 2.0"
@@ -67,6 +75,9 @@ module "consul_elb" {
     unhealthy_threshold = 2
     timeout             = 5
   }
+
+  number_of_instances = length(data.aws_instances.consul_tags.ids)
+  instances           = data.aws_instances.consul_tags.ids
 }
 
 resource "aws_security_group" "consul_default" {
